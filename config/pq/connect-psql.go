@@ -11,6 +11,7 @@ import (
 func Connect(con *config.DB) (*gorm.DB, error) {
 	db, err := getConnection(&config.DB{
 		DBUser:     con.DBUser,
+		DBName:     con.DBName,
 		DBPassword: con.DBPassword,
 		Port:       con.Port,
 	})
@@ -31,6 +32,6 @@ func getConnection(con *config.DB) (*gorm.DB, error) {
 }
 
 func query(con *config.DB) string {
-	return fmt.Sprintf("user=%s password=%s host=localhost port=%s sslmode=disable",
-		con.DBUser, con.DBPassword, con.Port)
+	return fmt.Sprintf("user=%s password=%s database=%s host=localhost port=%s sslmode=disable",
+		con.DBUser, con.DBPassword, con.DBName, con.Port)
 }

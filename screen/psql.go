@@ -30,10 +30,10 @@ func Psql(app *tview.Application) {
 }
 
 func checkPsql(form *tview.Form, app *tview.Application) (*tview.Application, *gorm.DB) {
-	username := ""
-	port := ""
-	password := ""
-	dbName := ""
+	var username string
+	var port string
+	var password string
+	var dbName string
 	usernameItem := form.GetFormItem(0)
 	portItem := form.GetFormItem(1)
 	dbN := form.GetFormItem(2)
@@ -51,8 +51,8 @@ func checkPsql(form *tview.Form, app *tview.Application) (*tview.Application, *g
 	if passwordItem != nil {
 		password = passwordItem.(*tview.InputField).GetText()
 	}
-	if username == "" || port == "" || password == "" {
-		Psql(app)
+	if username == "" || port == "" || password == "" || dbName == "" {
+		DbSelect(app)
 	}
 
 	db, err := pq.Connect(&config.DB{
@@ -63,7 +63,7 @@ func checkPsql(form *tview.Form, app *tview.Application) (*tview.Application, *g
 	})
 
 	if err != nil {
-		Psql(new(tview.Application))
+		DbSelect(app)
 
 	}
 

@@ -12,8 +12,7 @@ func Connect(con *config.DB) (*gorm.DB, error) {
 	db, err := getConnection(&config.DB{
 		DBUser:     con.DBUser,
 		DBPassword: con.DBPassword,
-		DBAddr:     con.DBAddr,
-		DBName:     con.DBName,
+		Port:       con.Port,
 	})
 	if err != nil {
 		return nil, err
@@ -31,6 +30,11 @@ func getConnection(con *config.DB) (*gorm.DB, error) {
 }
 
 func query(con *config.DB) string {
+
 	return fmt.Sprintf("%s:%s@tcp(localhost:%s)/?charset=utf8mb4&parseTime=True&loc=Local",
 		con.DBUser, con.DBPassword, con.Port)
 }
+
+//%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local
+
+//%s:%s@tcp(localhost:%s)/data12?charset=utf8mb4&parseTime=True&loc=Local
