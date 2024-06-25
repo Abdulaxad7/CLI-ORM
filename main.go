@@ -1,7 +1,7 @@
 package main
 
 import (
-	"Cli-Orm/screen"
+	"Cli-Orm/src"
 	_ "github.com/go-sql-driver/mysql"
 	_ "github.com/lib/pq"
 	"github.com/rivo/tview"
@@ -21,6 +21,6 @@ func main() {
 	//}
 	//fmt.Println(d)
 	app := tview.NewApplication()
-	screen.DbSelect(app)
+	src.DbSelect(app)
 
 }

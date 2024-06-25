@@ -1,4 +1,4 @@
-package screen
+package src
 
 import (
 	"Cli-Orm/config"

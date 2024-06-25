@@ -1,4 +1,4 @@
-package screen
+package src
 
 import (
 	"github.com/rivo/tview"
