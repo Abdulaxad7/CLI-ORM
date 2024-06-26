@@ -6,7 +6,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func ShowTables(app *tview.Application, db *gorm.DB) {
+func ShowTables(app *tview.Application, db *gorm.DB, dbName string) {
 	tables := tview.NewTable()
 	tables.SetBorders(true).SetBorder(true)
 	var results []map[string]interface{}
@@ -16,7 +16,7 @@ func ShowTables(app *tview.Application, db *gorm.DB) {
 
 			tables.SetCell(i, 0, tview.NewTableCell(v2.(string)).SetTextColor(tcell.ColorGreenYellow).SetAlign(tview.AlignCenter)).
 				SetSelectable(true, false).
-				SetOffset(1, 1).SetBackgroundColor(tcell.ColorWhite)
+				SetOffset(1, 1)
 
 		}
 
@@ -31,8 +31,8 @@ func ShowTables(app *tview.Application, db *gorm.DB) {
 		}
 	}).
 		SetSelectedFunc(func(row int, column int) {
-			v2 := tables.GetCell(row, column).Text
-			ShowValues(app, db, v2)
+			valFrom := tables.GetCell(row, column).Text
+			ShowValues(app, db, valFrom, dbName)
 		})
 
 	app.SetRoot(tables, true).SetFocus(tables)

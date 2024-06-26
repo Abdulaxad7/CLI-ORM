@@ -13,7 +13,7 @@ import (
 func Msql(app *tview.Application) {
 	var err error
 	form := tview.NewForm()
-	form.AddButton("<-", func() { DbSelect(app) })
+
 	form.AddInputField("Username", "", 20, nil, nil)
 	form.AddInputField("Port", "", 20, nil, nil)
 	form.AddPasswordField("Password", "", 20, '•', nil)
@@ -26,6 +26,7 @@ func Msql(app *tview.Application) {
 		msql.ShowDbs(app, db)
 
 	})
+	form.AddButton("<-", func() { DbSelect(app) })
 
 	app.SetRoot(form, true).SetFocus(form).EnableMouse(true)
 
