@@ -1,18 +1,19 @@
 package msql
 
 import (
-	"fmt"
+	"Cli-Orm/config/mq"
 	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
 	"gorm.io/gorm"
+	"os"
 )
 
 func ShowDbs(app *tview.Application, db *gorm.DB) {
 
 	tb := tview.NewTable()
-	tb.SetBorders(true).SetBorder(true)
-	var results []map[string]interface{}
-	db.Raw("SHOW DATABASES;").Scan(&results)
+	tb.SetBorders(true).SetBorder(true).SetTitle("Databases").SetBorderColor(tcell.ColorGreen)
+
+	results := mq.DbQuery(db)
 	for i, v := range results {
 		for _, v2 := range v {
 			tb.SetCell(i, 0, &tview.TableCell{Text: v2.(string), Align: tview.AlignCenter, Color: tview.Styles.TitleColor}).
@@ -21,7 +22,11 @@ func ShowDbs(app *tview.Application, db *gorm.DB) {
 	}
 	tb.Select(0, 0).SetFixed(1, 1).SetDoneFunc(func(key tcell.Key) {
 		if key == tcell.KeyEscape {
-			app.Stop()
+
+			if key == tcell.KeyEscape {
+				app.Stop()
+				os.Exit(0)
+			}
 		}
 		if key == tcell.KeyEnter {
 
@@ -30,11 +35,13 @@ func ShowDbs(app *tview.Application, db *gorm.DB) {
 	}).
 		SetSelectedFunc(func(row int, column int) {
 			dbName := tb.GetCell(row, column).SetTextColor(tcell.ColorRed).Text
-			db.Exec(fmt.Sprintf("USE %s", dbName))
+			mq.DbUseQuery(db, dbName)
 
 			ShowTables(app, db, dbName)
 		})
 
-	app.SetRoot(tb, true).SetFocus(tb)
+	if err := app.SetRoot(tb, true).SetFocus(tb).EnableMouse(true).Run(); err != nil {
+		panic(err)
+	}
 
 }

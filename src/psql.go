@@ -3,6 +3,7 @@ package src
 import (
 	"Cli-Orm/config"
 	"Cli-Orm/config/pq"
+	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
 	"gorm.io/gorm"
 )
@@ -18,15 +19,16 @@ func Psql(app *tview.Application) {
 	form.AddInputField("Database", "", 20, nil, nil)
 
 	form.AddPasswordField("Password", "", 20, '•', nil)
-	form.SetBorder(true).SetTitle("Log in Postgresql").SetTitleAlign(tview.AlignCenter)
+	form.SetBorder(true).SetTitle("Log in Postgresql").SetTitleAlign(tview.AlignCenter).SetBorderColor(tcell.ColorGreen)
 
 	form.AddButton("Submit", func() {
 		app, db = checkPsql(form, app)
 
 	})
 
-	app.SetRoot(form, true).SetFocus(form).EnableMouse(true)
-	return
+	if err := app.SetRoot(form, true).SetFocus(form).EnableMouse(true).Run(); err != nil {
+		panic(err)
+	}
 }
 
 func checkPsql(form *tview.Form, app *tview.Application) (*tview.Application, *gorm.DB) {

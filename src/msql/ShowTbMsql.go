@@ -1,6 +1,7 @@
 package msql
 
 import (
+	"Cli-Orm/config/mq"
 	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
 	"gorm.io/gorm"
@@ -9,8 +10,8 @@ import (
 func ShowTables(app *tview.Application, db *gorm.DB, dbName string) {
 	tables := tview.NewTable()
 	tables.SetBorders(true).SetBorder(true)
-	var results []map[string]interface{}
-	db.Raw("SHOW TABLES;").Scan(&results)
+
+	results := mq.DbTables(db)
 	for i, v := range results {
 		for _, v2 := range v {
 
@@ -35,5 +36,7 @@ func ShowTables(app *tview.Application, db *gorm.DB, dbName string) {
 			ShowValues(app, db, valFrom, dbName)
 		})
 
-	app.SetRoot(tables, true).SetFocus(tables)
+	if err := app.SetRoot(tables, true).SetFocus(tables).EnableMouse(true).Run(); err != nil {
+		panic(err)
+	}
 }

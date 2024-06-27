@@ -34,7 +34,3 @@ func query(con *config.DB) string {
 	return fmt.Sprintf("%s:%s@tcp(localhost:%s)/?charset=utf8mb4&parseTime=True&loc=Local",
 		con.DBUser, con.DBPassword, con.Port)
 }
-
-//%s:%s@tcp(%s)/%s?charset=utf8mb4&parseTime=True&loc=Local
-
-//%s:%s@tcp(localhost:%s)/data12?charset=utf8mb4&parseTime=True&loc=Local
