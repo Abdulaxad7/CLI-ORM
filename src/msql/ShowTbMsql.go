@@ -9,7 +9,7 @@ import (
 
 func ShowTables(app *tview.Application, db *gorm.DB, dbName string) {
 	tables := tview.NewTable()
-	tables.SetBorders(true).SetBorder(true)
+	tables.SetBorders(true).SetBorder(true).SetTitle(dbName)
 
 	results := mq.DbTables(db)
 	for i, v := range results {

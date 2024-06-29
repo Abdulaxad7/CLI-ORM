@@ -10,7 +10,7 @@ import (
 
 func ShowValues(app *tview.Application, db *gorm.DB, table string, dbName string) {
 	values := tview.NewTable()
-	values.SetBorders(true).SetBorder(true)
+	values.SetBorders(true).SetBorder(true).SetTitle(table)
 	results := mq.DbValues(db, table)
 	var i, j int
 	for _, v := range results {

@@ -8,5 +8,4 @@ import (
 func main() {
 	app := tview.NewApplication()
 	src.DbSelect(app)
-
 }

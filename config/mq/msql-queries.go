@@ -5,6 +5,7 @@ import (
 	"github.com/rivo/tview"
 	"gorm.io/gorm"
 	"os"
+	"strings"
 )
 
 func DbQuery(db *gorm.DB) []map[string]interface{} {
@@ -31,7 +32,7 @@ func DbValues(db *gorm.DB, table string) []map[string]interface{} {
 }
 func DbUpdate(db *gorm.DB, tableName, valueAfter, columnName, valueBefore string) error {
 	db.Exec("SET SQL_SAFE_UPDATES = 0")
-	tx := db.Exec(fmt.Sprintf("UPDATE %s set %s=%s where %s=%s", tableName, columnName, valueAfter, columnName, valueBefore))
+	tx := db.Exec(fmt.Sprintf("UPDATE %s set %s=%s where %s=%s;", tableName, columnName, valueAfter, columnName, valueBefore))
 	if tx.Error != nil {
 		return tx.Error
 	}
@@ -43,6 +44,24 @@ func DbTableColumns(db *gorm.DB, dbName, table string) []map[string]interface{} 
 	raws := db.Raw(query).Scan(&myColumns)
 	checkError(raws)
 	return myColumns
+}
+func DbCreate(db *gorm.DB, dbName string) {
+	tx := db.Exec(fmt.Sprintf("CREATE %s ;", dbName))
+	checkError(tx)
+}
+func DbDrop(db *gorm.DB, dbName string) {
+	tx := db.Exec(fmt.Sprintf("DROP DATABASE %s ;", dbName))
+	checkError(tx)
+}
+func DbCreateTable(db *gorm.DB, dbName string, values []string) {
+	valuesStrings := strings.Join(values, ", ")
+	tx := db.Exec(fmt.Sprintf("CREATE TABLE IF NOT EXISTS %s(%s);", dbName, valuesStrings))
+	checkError(tx)
+}
+func DbDropTable(db *gorm.DB, dbName, tableName string) {
+	db.Create("")
+	tx := db.Exec(fmt.Sprintf("DROP TABLE %s.%s", dbName, tableName))
+	checkError(tx)
 }
 
 func checkError(err *gorm.DB) {
