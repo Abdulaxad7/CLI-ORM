@@ -8,14 +8,15 @@ import (
 	"log"
 )
 
-func updateValue(app *tview.Application, db *gorm.DB, dbName, table, value string) {
+func (c CRUD) UpdateValue(app *tview.Application, db *gorm.DB, dbName, table, value string) {
+	show := ShowS{}
 	form := tview.NewForm()
 	form.AddInputField(fmt.Sprintf("Column Name"),
 		"", 30, nil, nil)
 	form.AddInputField(fmt.Sprintf("Updating from %s.%s value=%s to value=", dbName, table, value),
 		"", 30, nil, nil)
 
-	form.AddButton("<-", func() { ShowValues(app, db, table, dbName) })
+	form.AddButton("<-", func() { show.ShowValues(app, db, table, dbName) })
 	form.AddButton("Update", func() {
 		var err error
 		var newValue string
@@ -28,7 +29,7 @@ func updateValue(app *tview.Application, db *gorm.DB, dbName, table, value strin
 		if newValue == "" || columnName == "" {
 			form.GetFormItemByLabel("Column Name").(*tview.InputField).SetText("")
 			form.GetFormItemByLabel(fmt.Sprintf("Updating from %s.%s value=%s to value=", dbName, table, value)).(*tview.InputField).SetText("")
-			updateValue(app, db, dbName, table, value)
+			c.UpdateValue(app, db, dbName, table, value)
 		} else {
 			submit(app, columnName, newValue, db, dbName, table, value)
 		}
@@ -68,7 +69,7 @@ func fetchInputs(
 	if updated != nil {
 		updatedValue = updated.(*tview.InputField).GetText()
 	}
-	if columnName == "" || updatedValue == "" || !containsString(myColumns, columnName) {
+	if columnName == "" || updatedValue == "" || !ContainsString(myColumns, columnName) {
 		return app, db, "", ""
 
 	} else {
@@ -81,14 +82,16 @@ func fetchInputs(
 }
 
 func submit(app *tview.Application, columnName, newValue string, db *gorm.DB, dbName, table, value string) {
+	cr := CRUD{}
+	show := ShowS{}
 	modal := tview.NewModal().
 		SetText(fmt.Sprintf("Do you want to change %s=%s", columnName, newValue)).
 		AddButtons([]string{"Cancel", "Update"}).
 		SetDoneFunc(func(buttonIndex int, buttonLabel string) {
 			if buttonLabel == "Update" {
-				ShowValues(app, db, table, dbName)
+				show.ShowValues(app, db, table, dbName)
 			} else {
-				updateValue(app, db, dbName, table, value)
+				cr.UpdateValue(app, db, dbName, table, value)
 			}
 		})
 	if err := app.SetRoot(modal, false).SetFocus(modal).EnableMouse(true).Run(); err != nil {
@@ -96,7 +99,7 @@ func submit(app *tview.Application, columnName, newValue string, db *gorm.DB, db
 	}
 }
 
-func containsString(results []map[string]interface{}, target string) bool {
+func ContainsString(results []map[string]interface{}, target string) bool {
 	for _, m := range results {
 		for _, v := range m {
 			if str, ok := v.(string); ok && str == target {

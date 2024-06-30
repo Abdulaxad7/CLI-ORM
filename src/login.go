@@ -25,11 +25,11 @@ func exit(app *tview.Application) {
 		SetText("Do you want to quit the application?").
 		AddButtons([]string{"Cancel", "Quit"}).
 		SetDoneFunc(func(buttonIndex int, buttonLabel string) {
-			if buttonLabel == "Cancel" {
-				DbSelect(app)
-			} else {
+			if buttonLabel == "Quit" {
 				app.Stop()
 				os.Exit(0)
+			} else {
+				DbSelect(app)
 			}
 		})
 	if err := app.SetRoot(modal, true).SetFocus(modal).Run(); err != nil {

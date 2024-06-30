@@ -8,7 +8,8 @@ import (
 	"gorm.io/gorm"
 )
 
-func ShowValues(app *tview.Application, db *gorm.DB, table string, dbName string) {
+func (s ShowS) ShowValues(app *tview.Application, db *gorm.DB, table string, dbName string) {
+	cr := CRUD{}
 	values := tview.NewTable()
 	values.SetBorders(true).SetBorder(true).SetTitle(table)
 	results := mq.DbValues(db, table)
@@ -29,7 +30,7 @@ func ShowValues(app *tview.Application, db *gorm.DB, table string, dbName string
 	values.SetDoneFunc(func(key tcell.Key) {
 
 		if key == tcell.KeyEscape {
-			ShowTables(app, db, dbName)
+			s.ShowTables(app, db, dbName)
 		}
 		if key == tcell.KeyEnter {
 			values.SetSelectable(true, true)
@@ -37,7 +38,7 @@ func ShowValues(app *tview.Application, db *gorm.DB, table string, dbName string
 
 	}).SetSelectedFunc(func(row int, column int) {
 		value := values.GetCell(row, column).Text
-		updateValue(app, db, dbName, table, value)
+		cr.UpdateValue(app, db, dbName, table, value)
 	})
 
 	if err := app.SetRoot(values, true).SetFocus(values).EnableMouse(true).Run(); err != nil {

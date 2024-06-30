@@ -10,13 +10,14 @@ import (
 )
 
 func Msql(app *tview.Application) {
+	show := msql.ShowS{}
 	var err error
 	form := tview.NewForm()
 
 	form.AddInputField("Username", "", 20, nil, nil)
 	form.AddInputField("Port", "", 20, nil, nil)
 	form.AddPasswordField("Password", "", 20, '•', nil)
-	form.SetBorder(true).SetTitle("Log in Mysql").SetTitleAlign(tview.AlignCenter).SetBorderColor(tcell.ColorGreen)
+	form.SetBorder(true).SetTitle("Connecting Mysql").SetTitleAlign(tview.AlignCenter).SetBorderColor(tcell.ColorGreen)
 	form.AddButton("Submit", func() {
 		app, db, err = checkMsql(form, app)
 		if err != nil {
@@ -24,7 +25,8 @@ func Msql(app *tview.Application) {
 			app1 := tview.NewApplication()
 			DbSelect(app1)
 		}
-		msql.ShowDbs(app, db)
+
+		show.ShowDbs(app, db)
 
 	})
 	form.AddButton("<-", func() { DbSelect(app) })
