@@ -10,10 +10,10 @@ import (
 	"unicode"
 )
 
-func (c CRUD) Layout(app *tview.Application, db *gorm.DB, dbName string, action string, from int) {
+func (c CRUD) Layout(app *tview.Application, db *gorm.DB, dbName, tableName, action string, from int) {
 	show := ShowS{}
 	modal := tview.NewModal().
-		SetText(fmt.Sprintf("Are you sure you want to %s %s", action, dbName))
+		SetText(fmt.Sprintf("Are you sure you want to %s %s.%s", action, dbName, tableName))
 	act := strings.ToUpper(string(action[0])) + action[1:]
 	modal.AddButtons([]string{"Cancel", act}).
 		SetDoneFunc(func(buttonIndex int, buttonLabel string) {
@@ -22,9 +22,12 @@ func (c CRUD) Layout(app *tview.Application, db *gorm.DB, dbName string, action 
 			} else {
 				if from == 0 {
 					mq.DbCreate(db, dbName)
-				} else {
+				} else if from == 1 {
 					mq.DbDrop(db, dbName)
+				} else if from == 2 {
+					mq.DbDropTable(db, dbName, tableName)
 				}
+
 				show.ShowDbs(app, db)
 			}
 		})

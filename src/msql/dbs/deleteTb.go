@@ -1,5 +1,0 @@
-package dbs
-
-func DeleteTb() {
-
-}

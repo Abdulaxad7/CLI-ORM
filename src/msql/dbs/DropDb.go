@@ -12,7 +12,7 @@ func (c CRUD) DeleteForm(app *tview.Application, db *gorm.DB) *tview.Form {
 	deleteDb.AddInputField("Database name to drop", "", 20, nil, nil)
 	deleteDb.AddButton("Delete", func() {
 		if dbName := c.CaptureDbName(deleteDb, db, 1); dbName != "" {
-			c.Layout(app, db, dbName, "drop", 1)
+			c.Layout(app, db, dbName, "drop", "", 1)
 		} else {
 			show.ShowDbs(app, db)
 		}

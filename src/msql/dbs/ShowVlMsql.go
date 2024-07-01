@@ -45,7 +45,7 @@ func (s ShowS) ShowValues(app *tview.Application, db *gorm.DB, table string, dbN
 			InsertIntoTb()
 		}
 		if event.Rune() == 'd' {
-			DeleteTb()
+			cr.Layout(app, db, dbName, table, "drop", 2)
 		}
 		return event
 	})

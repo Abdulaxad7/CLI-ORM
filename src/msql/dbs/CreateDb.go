@@ -12,7 +12,7 @@ func (c CRUD) CreateDb(app *tview.Application, db *gorm.DB) *tview.Form {
 	form.AddInputField("Database name to create ", "", 20, nil, nil)
 	form.AddButton("Create", func() {
 		if dbName := c.CaptureDbName(form, db, 0); dbName != "" {
-			c.Layout(app, db, dbName, "create", 0)
+			c.Layout(app, db, dbName, "create", "", 0)
 		} else {
 			show.ShowDbs(app, db)
 		}
