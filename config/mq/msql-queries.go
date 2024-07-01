@@ -75,7 +75,10 @@ func DbDataTypes(db *gorm.DB, dbName, table string) []map[string]interface{} {
 	checkError(raws)
 	return myColumns
 }
-
+func DbDeleteRaw(db *gorm.DB, table, column, value string) {
+	raws := db.Exec(fmt.Sprintf("DELETE FROM %s WHERE %s='%s'", table, column, value))
+	checkError(raws)
+}
 func checkError(err *gorm.DB) {
 	if err.Error != nil {
 		app := tview.NewApplication()

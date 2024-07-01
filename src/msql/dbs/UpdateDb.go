@@ -3,6 +3,7 @@ package dbs
 import (
 	"Cli-Orm/config/mq"
 	"fmt"
+	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
 	"gorm.io/gorm"
 	"log"
@@ -11,6 +12,8 @@ import (
 func (c CRUD) UpdateValue(app *tview.Application, db *gorm.DB, dbName, table, value string) {
 	show := ShowS{}
 	form := tview.NewForm()
+	columns := CutMapStringInterface(mq.DbTableColumns(db, dbName, table))
+	//values := CutMapStringInterface(mq.DbValues(db, table))
 	form.AddInputField(fmt.Sprintf("Column Name"),
 		"", 30, nil, nil)
 	form.AddInputField(fmt.Sprintf("Updating from %s.%s value=%s to value=", dbName, table, value),
@@ -38,7 +41,25 @@ func (c CRUD) UpdateValue(app *tview.Application, db *gorm.DB, dbName, table, va
 
 	form.SetBorder(true).SetTitle(fmt.Sprintf("Updating %s", dbName+"/"+table+"/"+table))
 
-	if err := app.SetRoot(form, true).SetFocus(form).EnableMouse(true).Run(); err != nil {
+	form.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
+		if event.Key() == tcell.KeyEscape || event.Rune() == 'g' {
+			ShowS{}.ShowTables(app, db, dbName)
+		}
+		if event.Rune() == 'd' {
+			//for i, v := range columns {
+			//if values[i] == value {
+			mq.DbDeleteRaw(db, table, columns[0], value)
+			//}
+			//}
+		}
+		return event
+	})
+	form.SetBorder(true).SetTitle(dbName + "/" + table + "/" + value + "/").SetBorderColor(tcell.ColorGreen)
+	flex := tview.NewFlex()
+	flex.AddItem(form, 0, 12, true)
+	flex.AddItem(Info("\n\n Press ⎋esc or 'g' to go back\n\n Press 'd' to delete this row"), 0, 2, false)
+
+	if err := app.SetRoot(flex, true).SetFocus(flex).EnableMouse(true).Run(); err != nil {
 		panic(err)
 	}
 }
