@@ -3,14 +3,14 @@ package src
 import (
 	"Cli-Orm/config"
 	"Cli-Orm/config/mq"
-	"Cli-Orm/src/msql"
+	"Cli-Orm/src/msql/dbs"
 	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
 	"gorm.io/gorm"
 )
 
 func Msql(app *tview.Application) {
-	show := msql.ShowS{}
+	show := dbs.ShowS{}
 	var err error
 	form := tview.NewForm()
 
@@ -28,6 +28,12 @@ func Msql(app *tview.Application) {
 
 		show.ShowDbs(app, db)
 
+	})
+	form.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
+		if event.Key() == tcell.KeyEscape {
+			DbSelect(app)
+		}
+		return event
 	})
 	form.AddButton("<-", func() { DbSelect(app) })
 

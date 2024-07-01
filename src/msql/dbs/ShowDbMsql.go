@@ -1,8 +1,7 @@
-package msql
+package dbs
 
 import (
 	"Cli-Orm/config/mq"
-
 	"github.com/gdamore/tcell/v2"
 	"github.com/rivo/tview"
 	"gorm.io/gorm"
@@ -38,11 +37,20 @@ func (s ShowS) ShowDbs(app *tview.Application, db *gorm.DB) {
 		mq.DbUseQuery(db, dbName)
 		s.ShowTables(app, db, dbName)
 	})
+	tb.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
+		if event.Rune() == 'q' {
+			app.Stop()
+			os.Exit(0)
+		}
+		return event
+	})
 
 	flex := tview.NewFlex()
 	flex.AddItem(tb, 0, 10, true)
+
 	flex.AddItem(cr.DeleteForm(app, db), 0, 5, false)
 	flex.AddItem(cr.CreateDb(app, db), 0, 5, false)
+	flex.AddItem(Info("\n\n Press ⮐ enter to show tables\n\n Press ⎋esc or 'q' to exit\n\n ↑/ up • ↓/ down"), 0, 3, true)
 	if err := app.SetRoot(flex, true).SetFocus(flex).EnableMouse(true).Run(); err != nil {
 		panic(err)
 	}

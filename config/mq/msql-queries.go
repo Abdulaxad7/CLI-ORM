@@ -53,9 +53,9 @@ func DbDrop(db *gorm.DB, dbName string) {
 	tx := db.Exec(fmt.Sprintf("DROP DATABASE %s ;", dbName))
 	checkError(tx)
 }
-func DbCreateTable(db *gorm.DB, dbName string, values []string) {
+func DbCreateTable(db *gorm.DB, tbName string, values []string) {
 	valuesStrings := strings.Join(values, ", ")
-	tx := db.Exec(fmt.Sprintf("CREATE TABLE IF NOT EXISTS %s(%s);", dbName, valuesStrings))
+	tx := db.Exec(fmt.Sprintf("CREATE TABLE IF NOT EXISTS %s(%s);", tbName, valuesStrings))
 	checkError(tx)
 }
 func DbDropTable(db *gorm.DB, dbName, tableName string) {

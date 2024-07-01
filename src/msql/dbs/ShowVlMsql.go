@@ -1,4 +1,4 @@
-package msql
+package dbs
 
 import (
 	"Cli-Orm/config/mq"
@@ -11,7 +11,7 @@ import (
 func (s ShowS) ShowValues(app *tview.Application, db *gorm.DB, table string, dbName string) {
 	cr := CRUD{}
 	values := tview.NewTable()
-	values.SetBorders(true).SetBorder(true).SetTitle(table)
+	values.SetBorders(true).SetBorder(true).SetTitle(dbName + "/" + table + "/")
 	results := mq.DbValues(db, table)
 	var i, j int
 	for _, v := range results {
@@ -40,8 +40,25 @@ func (s ShowS) ShowValues(app *tview.Application, db *gorm.DB, table string, dbN
 		value := values.GetCell(row, column).Text
 		cr.UpdateValue(app, db, dbName, table, value)
 	})
-
-	if err := app.SetRoot(values, true).SetFocus(values).EnableMouse(true).Run(); err != nil {
+	values.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
+		if event.Rune() == 'i' {
+			InsertIntoTb()
+		}
+		if event.Rune() == 'd' {
+			DeleteTb()
+		}
+		return event
+	})
+	flex := tview.NewFlex()
+	flex.AddItem(values, 0, 12, true)
+	flex.AddItem(Info("\n\n Press ⮐ enter to change value\n\n"+
+		" Press ⎋esc to go back\n\n"+
+		" ↑/ up • ↓/ down\n\n"+
+		" ←/ right • →/ left\n\n"+
+		" Press 'i' to insert values\n\n"+
+		" Press 'd' to drop table "),
+		0, 2, false)
+	if err := app.SetRoot(flex, true).SetFocus(flex).EnableMouse(true).Run(); err != nil {
 		panic(err)
 	}
 }

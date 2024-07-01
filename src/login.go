@@ -12,7 +12,7 @@ func DbSelect(app *tview.Application) {
 
 	list.AddItem("Mysql", "", '1', func() { Msql(app) })
 	list.AddItem("Postgresql", "", '2', func() { Psql(app) })
-	list.AddItem("Quit", "", '0', func() { exit(app) })
+	list.AddItem("Quit", "", '0', func() { Exit(app) })
 
 	list.SetBorder(true).SetBorderColor(tcell.ColorGreen)
 	if err := app.SetRoot(list, true).SetFocus(list).EnableMouse(true).Run(); err != nil {
@@ -20,7 +20,7 @@ func DbSelect(app *tview.Application) {
 	}
 }
 
-func exit(app *tview.Application) {
+func Exit(app *tview.Application) {
 	modal := tview.NewModal().
 		SetText("Do you want to quit the application?").
 		AddButtons([]string{"Cancel", "Quit"}).

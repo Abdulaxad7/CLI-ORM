@@ -1,0 +1,5 @@
+package dbs
+
+func DeleteTb() {
+
+}

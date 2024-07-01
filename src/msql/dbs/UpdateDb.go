@@ -1,4 +1,4 @@
-package msql
+package dbs
 
 import (
 	"Cli-Orm/config/mq"
@@ -36,7 +36,7 @@ func (c CRUD) UpdateValue(app *tview.Application, db *gorm.DB, dbName, table, va
 
 	})
 
-	form.SetBorder(true).SetTitle(fmt.Sprintf("Updating %s", table))
+	form.SetBorder(true).SetTitle(fmt.Sprintf("Updating %s", dbName+"/"+table+"/"+table))
 
 	if err := app.SetRoot(form, true).SetFocus(form).EnableMouse(true).Run(); err != nil {
 		panic(err)
@@ -97,15 +97,4 @@ func submit(app *tview.Application, columnName, newValue string, db *gorm.DB, db
 	if err := app.SetRoot(modal, false).SetFocus(modal).EnableMouse(true).Run(); err != nil {
 		panic(err)
 	}
-}
-
-func ContainsString(results []map[string]interface{}, target string) bool {
-	for _, m := range results {
-		for _, v := range m {
-			if str, ok := v.(string); ok && str == target {
-				return true
-			}
-		}
-	}
-	return false
 }

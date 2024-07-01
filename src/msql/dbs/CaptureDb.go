@@ -1,4 +1,4 @@
-package msql
+package dbs
 
 import (
 	"Cli-Orm/config/mq"

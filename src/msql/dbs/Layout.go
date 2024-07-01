@@ -1,4 +1,4 @@
-package msql
+package dbs
 
 import (
 	"Cli-Orm/config/mq"
@@ -7,6 +7,7 @@ import (
 	"github.com/rivo/tview"
 	"gorm.io/gorm"
 	"strings"
+	"unicode"
 )
 
 func (c CRUD) Layout(app *tview.Application, db *gorm.DB, dbName string, action string, from int) {
@@ -36,4 +37,32 @@ func (c CRUD) Layout(app *tview.Application, db *gorm.DB, dbName string, action 
 	if err := app.SetRoot(modal, true).SetFocus(modal).Run(); err != nil {
 		panic(err)
 	}
+}
+
+func Info(setText string) *tview.TextView {
+	text := tview.NewTextView()
+	text.SetText(setText)
+	text.SetBorderColor(tcell.ColorBlack)
+	text.SetTextColor(tcell.ColorGrey)
+	return text
+}
+
+func ContainsAlpha(s string) bool {
+	for _, n := range s {
+		if unicode.IsLetter(n) {
+			return true
+		}
+	}
+	return false
+}
+
+func ContainsString(results []map[string]interface{}, target string) bool {
+	for _, m := range results {
+		for _, v := range m {
+			if str, ok := v.(string); ok && str == target {
+				return true
+			}
+		}
+	}
+	return false
 }

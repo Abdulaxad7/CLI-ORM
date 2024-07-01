@@ -1,4 +1,4 @@
-package msql
+package dbs
 
 import (
 	"github.com/rivo/tview"
