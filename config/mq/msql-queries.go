@@ -63,6 +63,18 @@ func DbDropTable(db *gorm.DB, dbName, tableName string) {
 	tx := db.Exec(fmt.Sprintf("DROP TABLE %s.%s", dbName, tableName))
 	checkError(tx)
 }
+func DbInsertToTable(db *gorm.DB, tbName string, values []string) {
+	valuesStrings := strings.Join(values, ", ")
+	tx := db.Exec(fmt.Sprintf("INSERT INTO %s VALUES(%s);", tbName, valuesStrings))
+	checkError(tx)
+}
+func DbDataTypes(db *gorm.DB, dbName, table string) []map[string]interface{} {
+	var myColumns []map[string]interface{}
+	query := fmt.Sprintf("SELECT DATA_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_SCHEMA = '%s' AND TABLE_NAME = '%s';", dbName, table)
+	raws := db.Raw(query).Scan(&myColumns)
+	checkError(raws)
+	return myColumns
+}
 
 func checkError(err *gorm.DB) {
 	if err.Error != nil {
@@ -82,6 +94,7 @@ func checkError(err *gorm.DB) {
 					page == 0)
 			}(page)
 		}
+
 		if err := app.SetRoot(pages, true).SetFocus(pages).Run(); err != nil {
 			panic(err)
 		}

@@ -69,3 +69,12 @@ func ContainsString(results []map[string]interface{}, target string) bool {
 	}
 	return false
 }
+func CutMapStringInterface(data []map[string]interface{}) []string {
+	var result []string
+	for _, v1 := range data {
+		for _, v2 := range v1 {
+			result = append(result, v2.(string))
+		}
+	}
+	return result
+}
