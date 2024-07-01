@@ -42,7 +42,7 @@ func (s ShowS) ShowValues(app *tview.Application, db *gorm.DB, table string, dbN
 	})
 	values.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
 		if event.Rune() == 'i' {
-			InsertIntoTb(app, db, dbName, table)
+			s.InsertIntoTb(app, db, dbName, table)
 		}
 		if event.Rune() == 'd' {
 			cr.Layout(app, db, dbName, table, "drop", 2)

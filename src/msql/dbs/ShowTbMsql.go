@@ -35,7 +35,7 @@ func (s ShowS) ShowTables(app *tview.Application, db *gorm.DB, dbName string) {
 		})
 	tables.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
 		if event.Rune() == 'c' {
-			CreateTb(app, db, dbName)
+			s.CreateTb(app, db, dbName)
 		}
 		return event
 	})

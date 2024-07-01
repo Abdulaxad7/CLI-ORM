@@ -8,7 +8,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func InsertIntoTb(app *tview.Application, db *gorm.DB, dbName, tbName string) {
+func (s ShowS) InsertIntoTb(app *tview.Application, db *gorm.DB, dbName, tbName string) {
 	form := tview.NewForm()
 	columns := CutMapStringInterface(mq.DbTableColumns(db, dbName, tbName))
 	columnTypes := CutMapStringInterface(mq.DbDataTypes(db, dbName, tbName))

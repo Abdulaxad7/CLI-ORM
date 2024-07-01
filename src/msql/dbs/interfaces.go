@@ -17,6 +17,8 @@ type crud interface {
 	UpdateValue(app *tview.Application, db *gorm.DB, dbName, table, value string)
 	CaptureDbName(form *tview.Form, db *gorm.DB, from int) string
 	Layout(app *tview.Application, db *gorm.DB, dbName string, action string, from int)
+	CreateTb(app *tview.Application, db *gorm.DB, dbName string)
+	InsertIntoTb(app *tview.Application, db *gorm.DB, dbName, tbName string)
 }
 
 type ShowS struct {

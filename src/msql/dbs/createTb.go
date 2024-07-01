@@ -12,7 +12,7 @@ import (
 
 var s = ShowS{}
 
-func CreateTb(app *tview.Application, db *gorm.DB, dbName string) {
+func (s ShowS) CreateTb(app *tview.Application, db *gorm.DB, dbName string) {
 	form := tview.NewForm()
 	var columns string
 	var tableName string
@@ -26,7 +26,7 @@ func CreateTb(app *tview.Application, db *gorm.DB, dbName string) {
 	form.AddButton("Create", func() {
 		tables := mq.DbTables(db)
 		if tableName == "" || columns == "" || ContainsAlpha(columns) || ContainsString(tables, tableName) || unicode.IsDigit(rune(tableName[0])) {
-			CreateTb(app, db, dbName)
+			s.CreateTb(app, db, dbName)
 		} else {
 			columnTb(app, columns, db, tableName, dbName)
 		}
@@ -66,7 +66,7 @@ func columnTb(app *tview.Application, option string, db *gorm.DB, tbName, dbName
 	})
 	form.SetInputCapture(func(event *tcell.EventKey) *tcell.EventKey {
 		if event.Key() == tcell.KeyEscape || event.Rune() == 'g' {
-			CreateTb(app, db, dbName)
+			s.CreateTb(app, db, dbName)
 		}
 		return event
 	})
