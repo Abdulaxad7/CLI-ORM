@@ -61,6 +61,9 @@ func columnTb(app *tview.Application, option string, db *gorm.DB, tbName, dbName
 
 	form.AddButton("Create", func() {
 		values := getQuery(form, num)
+		if len(values) == 0 {
+			s.ShowDbs(app, db)
+		}
 		mq.DbCreateTable(db, tbName, values)
 		s.ShowDbs(app, db)
 	})
@@ -86,6 +89,9 @@ func getQuery(form *tview.Form, num int) []string {
 	var values []string
 
 	for i := 0; i < num; i++ {
+		if form.GetFormItem(i).(*tview.InputField).GetText() == "" {
+			return []string{}
+		}
 		if i == 0 {
 			values = append(values, form.GetFormItem(i).(*tview.InputField).GetText()+"primary key not null ")
 		} else {
