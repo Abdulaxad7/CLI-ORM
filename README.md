@@ -19,3 +19,9 @@ CLI-ORM is a command-line interface tool designed to simplify database interacti
    ```bash
    git clone https://github.com/Abdulaxad7/CLI-ORM.git
    cd CLI-ORM
+2. Install Go modules
+   ```bash
+   go mod tidy
+3. Run
+   ```bash
+   go run main.go
