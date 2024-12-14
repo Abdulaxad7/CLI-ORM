@@ -107,4 +107,4 @@ Located in `src/msql/dbs/` and includes:
 
 ## License
 
-This project is licensed under [MIT License](LICENSE).
+This project is licensed under MIT License.
