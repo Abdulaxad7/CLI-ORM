@@ -1,3 +1,5 @@
+[![Build Status](http://localhost:8080/buildStatus/icon?job=fibonachi)](http://localhost:8080/job/fibonachi/)
+
 # CLI-Orm
 
 A CLI-based ORM tool for interacting with MySQL databases using Go. This project allows developers to perform essential database operations such as creating databases, managing tables, inserting values, and executing updates—all through a command-line interface.
