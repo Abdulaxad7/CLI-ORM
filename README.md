@@ -1,4 +1,4 @@
-[![Build Status](http://localhost:8080/buildStatus/icon?job=fibonachi)](http://localhost:8080/job/fibonachi/)
+[![Build Status](http://209.38.236.180/buildStatus/icon?job=pi-challenge)](http://209.38.236.180/job/pi-challenge/)
 
 # CLI-Orm
 
