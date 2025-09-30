@@ -1,12 +1,14 @@
 pipeline {
-	agent linux
+	agent {
+		label linux
+	}
     options {
 		buildDiscarder(logRotator(daysToKeepStr: '10', numToKeepStr: '10'))
         timeout(time: 12, unit: 'HOURS')
         timestamps()
     }
     tools {
-		go 'Go 1.22'
+		go 'Go 1.22.3'
 	}
     stages {
 		stage('Requirements') {
@@ -36,6 +38,5 @@ pipeline {
                 sh 'echo Code build Successfully'
 			}
 		}
-		stage('code-')
     }
 }
