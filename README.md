@@ -1,5 +1,5 @@
 # Build status
-[![Build Status](http://209.38.236.180/buildStatus/icon?job=pi-challenge&build=3)](http://209.38.236.180/job/pi-challenge/3/)
+[![Build Status](http://134.199.221.154/buildStatus/icon?job=publish-reports)](http://134.199.221.154/job/publish-reports/)
 
 # CLI-Orm
 
