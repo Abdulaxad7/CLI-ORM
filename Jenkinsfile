@@ -44,7 +44,7 @@ pipeline {
                 archiveArtifacts allowEmptyArchive: true,
                 	artifacts: 'text.txt',
                     fingerprint: true,
-                    followSymLinks: false,
+                    followSymlinks: false,
                     onlyIfSuccessful: true
 		}
 	}
