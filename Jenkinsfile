@@ -3,6 +3,7 @@ pipeline {
 		label 'linux'
 	}
     options {
+		copyArtifactPermission 'read-artifact'
 		buildDiscarder(logRotator(daysToKeepStr: '10', numToKeepStr: '10'))
         timeout(time: 12, unit: 'HOURS')
         timestamps()
@@ -22,14 +23,13 @@ pipeline {
 			steps {
 				// the algorithm script creates a file named report.txt
                 sh('./algorithm.sh')
-
-                // this step archives the report
-                archiveArtifacts allowEmptyArchive: true,
-                	artifacts: '*.txt',
-                    fingerprint: true,
-                    onlyIfSuccessful: true
             }
         }
+        stage('Create-Artifact'){
+			steps {
+				sh 'set > text.txt'
+			}
+		}
         stage('Code-Build'){
 			steps {
 				dir("${env.WORKSPACE}"){
@@ -39,4 +39,13 @@ pipeline {
 			}
 		}
     }
+    post {
+		always {
+                archiveArtifacts allowEmptyArchive: true,
+                	artifacts: 'text.txt',
+                    fingerprint: true,
+                    followSymLinks: false,
+                    onlyIfSuccessful: true
+		}
+	}
 }
