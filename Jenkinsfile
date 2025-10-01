@@ -3,7 +3,7 @@ pipeline {
 		label 'linux'
 	}
     options {
-		copyArtifactPermission 'read-artifact'
+		copyArtifactPermission('read-artifact')
 		buildDiscarder(logRotator(daysToKeepStr: '10', numToKeepStr: '10'))
         timeout(time: 12, unit: 'HOURS')
         timestamps()
