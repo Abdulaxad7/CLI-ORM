@@ -1,24 +1,31 @@
 name: first Check
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
 
 jobs:
   job1:
     name: First Job
+    needs: [job2]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4 
+        uses: actions/checkout@v5 
         
       - name: Step one - Print Environment Variables (Linux)
         run: env | sort
-
+    
   job2:
     name: Second Job
     runs-on: windows-latest
     steps:
       - name: Checkout Code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Step two - Print Environment Variables (Windows)
         run: "Get-ChildItem Env: | Sort-Object Name"
