@@ -4,42 +4,42 @@ env:
   WORKSPACE_ENVIRONMENT_VARIABLES: 'This is workspace env variable'
   OVERRIDE: 'Workspace'
 
-
 on: [push]
-  jobs:
-    ubuntu:
-      env:
-        JOB_ENVIRONMENT_VARIABLE: 'This is job env variable'
-        OVERRIDE: 'Job'
-      needs: [job2]
-      runs-on: ubuntu-latest
-      steps:
-        - name: Checkout Code
-          env: 
-            STEP_ENVIRONMENT_VARIABLES: 'This is step env variable'
-            OVERRIDE: 'Step'
-          uses: actions/checkout@v5 
-          run: |
-            echo "Accessing using shell syntax: "
-            echo 1. $WORKSPACE_ENVIRONMENT_VARIABLES
-            echo 2. $JOB_ENVIRONMENT_VARIABLE
-            echo 3. $STEP_ENVIRONMENT_VARIABLES
-            echo 4. $OVERRIDE
-            echo "------"
-            echo "Accessing using yaml syntax"
-            echo 1. ${{ env.WORKSPACE_ENVIRONMENT_VARIABLES }}
-            echo 2. ${{ env.JOB_ENVIRONMENT_VARIABLE }}
-            echo 3. ${{ env.STEP_ENVIRONMENT_VARIABLES }}
-            echo 4. ${{ env.OVERRIDE }}
-        - name: Step one - Print Environment Variables (Linux)
-          run: env | sort
+
+jobs:
+  ubuntu:
+    env:
+      JOB_ENVIRONMENT_VARIABLE: 'This is job env variable'
+      OVERRIDE: 'Job'
+    needs: [windows]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        env: 
+          STEP_ENVIRONMENT_VARIABLES: 'This is step env variable'
+          OVERRIDE: 'Step'
+        run: |
+          echo "Accessing using shell syntax: "
+          echo 1. $WORKSPACE_ENVIRONMENT_VARIABLES
+          echo 2. $JOB_ENVIRONMENT_VARIABLE
+          echo 3. $STEP_ENVIRONMENT_VARIABLES
+          echo 4. $OVERRIDE
+          echo "------"
+          echo "Accessing using yaml syntax"
+          echo 1. ${{ env.WORKSPACE_ENVIRONMENT_VARIABLES }}
+          echo 2. ${{ env.JOB_ENVIRONMENT_VARIABLE }}
+          echo 3. ${{ env.STEP_ENVIRONMENT_VARIABLES }}
+          echo 4. ${{ env.OVERRIDE }}
+      - name: Step one - Print Environment Variables (Linux)
+        run: env | sort
     
-    job2:
-     name: Second Job
-     runs-on: windows-latest
-      steps:
-        - name: Checkout Code
-          uses: actions/checkout@v5
+  windows:
+    name: Second Job
+    runs-on: windows-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v5
   
-        - name: Step two - Print Environment Variables (Windows)
-          run: "Get-ChildItem Env: | Sort-Object Name"
+      - name: Step two - Print Environment Variables (Windows)
+        run: "Get-ChildItem Env: | Sort-Object Name"
+
